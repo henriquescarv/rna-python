@@ -1,25 +1,49 @@
-import numpy as np
+from ucimlrepo import fetch_ucirepo
 import pandas as pd
-import kagglehub
-import os
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import MinMaxScaler, OneHotEncoder
+import numpy as np
+import matplotlib.pyplot as plt
 
-from rnn import relu, relu_derivative
+from rnn import categorical_crossentropy_loss, categorical_crossentropy_loss_derivative, NeuralNetwork
 
-# Carregar o dataset
-data_path = kagglehub.dataset_download('kukuroo3/body-performance-data')
-dataset = os.listdir(data_path)[0]
-data_csv = pd.read_csv(os.path.join(data_path, dataset))
-data_csv['gender'] = data_csv['gender'].map({'M': 0, 'F': 1})
-data_csv['class'] = data_csv['class'].map({'D': 0, 'C': 1, 'B': 2, 'A': 3})
+# Fetch dataset
+zoo = fetch_ucirepo(id=111)
 
-def normalize(data):
-    return (data - np.mean(data, axis=0)) / np.std(data, axis=0)
+# Data (as pandas dataframes)
+X = zoo.data.features  # Features
+y = zoo.data.targets    # Target
 
-x = data_csv.drop(columns=['class']).values
-y = data_csv['class'].values
+# Aplicando One-Hot Encoding à coluna 'legs'
+X = pd.get_dummies(X, columns=['legs'], prefix='legs', dtype=int)
 
-x = normalize(x)
-y = normalize(y.reshape(-1, 1))
+# Convertendo y para One-Hot Encoding
+y_onehot = pd.get_dummies(y, columns=['type'], prefix='type', dtype=int)
 
+X = X.to_numpy()
+y_onehot = y_onehot.to_numpy()
+
+# Dividindo o dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y_onehot, test_size=0.2, random_state=42)
+
+input_size = X_train.shape[1]
+hidden_size = 10
+output_size = y_train.shape[1]  # Número de classes
+learning_rate = 0.01
+epochs = 1000
+
+# Inicializando a rede neural
+nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate, output_activation='softmax')
+
+# Treinando a rede
+losses = nn.train(X_train, y_train, epochs, categorical_crossentropy_loss, categorical_crossentropy_loss_derivative)
+
+# Avaliação
+y_pred = nn.predict(X_test, 'multiclass')
+accuracy = np.mean(np.argmax(y_test, axis=1) == y_pred) * 100
+print(f"Acurácia no conjunto de teste: {accuracy:.2f}%")
+
+plt.plot(losses)
+plt.title("Erro ao longo das épocas")
+plt.xlabel("Épocas")
+plt.ylabel("Erro")
+plt.show()

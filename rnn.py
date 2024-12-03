@@ -48,12 +48,12 @@ def categorical_crossentropy_loss(y_true, y_pred):
 def categorical_crossentropy_loss_derivative(y_true, y_pred):
     return y_pred - y_true
 
+
 # Função para calcular o coeficiente de determinação (R2) para o problema de regressão
 def r2_score(y_true, y_pred):
     ss_total = np.sum((y_true - np.mean(y_true)) ** 2)
     ss_residual = np.sum((y_true - y_pred) ** 2)
     return 1 - (ss_residual / ss_total)
-
 
 
 class NeuralNetwork:
@@ -86,7 +86,7 @@ class NeuralNetwork:
 
         return self.final_output
 
-    def backward(self, X, y, y_pred, loss_derivative):
+    def backpropagation(self, X, y, y_pred, loss_derivative):
         # Erro na saída
         if self.output_activation == 'linear':
           output_error = loss_derivative(y, y_pred) * linear_derivative(self.final_input)
@@ -126,7 +126,7 @@ class NeuralNetwork:
             losses.append(loss)
 
             # Backward
-            self.backward(X, y, y_pred, loss_derivative)
+            self.backpropagation(X, y, y_pred, loss_derivative)
 
             if epoch % 100 == 0:
                 print(f"Epoch {epoch}, Loss: {loss}")

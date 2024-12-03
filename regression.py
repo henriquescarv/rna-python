@@ -17,7 +17,9 @@ def normalize(data):
     return (data - np.mean(data, axis=0)) / np.std(data, axis=0)
 
 # Preparar os dados
-X = data_csv[['Hours Studied', 'Previous Scores', 'Sleep Hours', 'Sample Question Papers Practiced']].values
+X = data_csv[['Hours Studied', 'Previous Scores', 'Extracurricular Activities', 'Sleep Hours', 'Sample Question Papers Practiced']]
+X['Extracurricular Activities'] = X['Extracurricular Activities'].map({'Yes': 1, 'No': 0})
+X = X.values
 y = data_csv['Performance Index'].values
 y = normalize(y.reshape(-1, 1))
 
@@ -33,7 +35,6 @@ hidden_size = 10
 output_size = 1
 learning_rate = 0.1
 epochs = 600
-
 
 # Treinamento
 nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate)

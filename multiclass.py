@@ -23,7 +23,9 @@ X = X.to_numpy()
 y_onehot = y_onehot.to_numpy()
 
 # Dividindo o dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y_onehot, test_size=0.2, random_state=42)
+X_train_1, X_test, y_train_1, y_test = train_test_split(X, y_onehot, test_size=0.2, random_state=42)
+
+X_train, X_validation, y_train, y_validation = train_test_split(X_train_1, y_train_1, test_size=0.2, random_state=42)
 
 input_size = X_train.shape[1]
 hidden_size = 10
@@ -35,15 +37,21 @@ epochs = 1000
 nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate, output_activation='softmax')
 
 # Treinando a rede
-losses = nn.train(X_train, y_train, epochs, categorical_crossentropy_loss, categorical_crossentropy_loss_derivative)
+train_losses, test_losses = nn.train(X_train, y_train, epochs, 
+                                     categorical_crossentropy_loss, 
+                                     categorical_crossentropy_loss_derivative, 
+                                     X_test=X_validation, y_test=y_validation)
 
 # Avaliação
-y_pred = nn.predict(X_test, 'multiclass')
-accuracy = np.mean(np.argmax(y_test, axis=1) == y_pred) * 100
+y_pred = nn.predict(X_validation, 'multiclass')
+accuracy = np.mean(np.argmax(y_validation, axis=1) == y_pred) * 100
 print(f"Acurácia no conjunto de teste: {accuracy:.2f}%")
 
-plt.plot(losses)
+# Gráfico das perdas
+plt.plot(train_losses, label="Treinamento")
+plt.plot(test_losses, label="Teste")
 plt.title("Erro ao longo das épocas")
 plt.xlabel("Épocas")
 plt.ylabel("Erro")
+plt.legend()
 plt.show()

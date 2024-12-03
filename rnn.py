@@ -115,29 +115,34 @@ class NeuralNetwork:
         self.weights_input_hidden -= self.learning_rate * weights_input_hidden_grad
         self.bias_hidden -= self.learning_rate * bias_hidden_grad
 
-    def train(self, X, y, epochs, loss_function, loss_derivative):
-        losses = []
+    def train(self, X_train, y_train, epochs, loss_function, loss_derivative, X_test=None, y_test=None):
+        train_losses = []
+        test_losses = []
+
         for epoch in range(epochs):
             # Forward
-            y_pred = self.forward(X)
+            y_pred = self.forward(X_train)
 
             # Cálculo do erro
-            loss = loss_function(y, y_pred)
-            losses.append(loss)
+            loss = loss_function(y_train, y_pred)
+            self.backward(X_train, y_train, y_pred, loss_derivative)
+            train_losses.append(loss)
 
-            # Backward
-            self.backward(X, y, y_pred, loss_derivative)
+            if X_test is not None and y_test is not None:
+              y_test_pred = self.forward(X_test)
+              test_loss = loss_function(y_test, y_test_pred)
+              test_losses.append(test_loss)
 
             if epoch % 100 == 0:
-                print(f"Epoch {epoch}, Loss: {loss}")
+                print(f"Epoch {epoch}, Train Loss: {loss:.4f}, Test Loss: {test_loss if X_test is not None else 'N/A'}")
 
-        return losses
+        return train_losses, test_losses
 
     def predict(self, X, type):
       if type == 'binary':
         y_pred = self.forward(X)
         return (y_pred > 0.5).astype(int)  # Classificação binária
-      
+
       if type == 'multiclass':
         y_pred = self.forward(X)
         return np.argmax(y_pred, axis=1)  # Classificação multiclasse

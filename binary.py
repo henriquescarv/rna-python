@@ -41,7 +41,7 @@ nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate, output_a
 losses = nn.train(X_normalized, y, epochs, binary_crossentropy_loss, binary_crossentropy_loss_derivative)
 
 # Prever os dados de teste
-y_pred = nn.predict(X_normalized)
+y_pred = nn.predict(X_normalized, 'binary')
 
 # Avaliação da rede
 accuracy = np.mean(y_pred == y) * 100

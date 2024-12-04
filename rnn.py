@@ -26,13 +26,13 @@ def softmax(z):
     return exp_z / np.sum(exp_z, axis=1, keepdims=True)
 
 # Funções de perda
-def mse_loss(y_true, y_pred):
+def mse_loss(y_true, y_pred): # Erro quadrático médio
     return np.mean((y_true - y_pred) ** 2)
 
 def mse_loss_derivative(y_true, y_pred):
     return -2 * (y_true - y_pred) / y_true.size
 
-def binary_crossentropy_loss(y_true, y_pred):
+def binary_crossentropy_loss(y_true, y_pred): # Entropria cruzada binária
     epsilon = 1e-15  # Evitar log(0)
     y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
     return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
@@ -40,7 +40,7 @@ def binary_crossentropy_loss(y_true, y_pred):
 def binary_crossentropy_loss_derivative(y_true, y_pred):
     return y_pred - y_true
 
-def categorical_crossentropy_loss(y_true, y_pred):
+def categorical_crossentropy_loss(y_true, y_pred): # Entropria cruzada categórica
     epsilon = 1e-15
     y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
     return -np.mean(np.sum(y_true * np.log(y_pred), axis=1))
@@ -69,10 +69,8 @@ class NeuralNetwork:
         self.bias_output = np.zeros((1, output_size))
 
     def forward(self, X):
-        # Propagação para frente
         self.hidden_input = np.dot(X, self.weights_input_hidden) + self.bias_hidden
         self.hidden_output = relu(self.hidden_input)
-
         self.final_input = np.dot(self.hidden_output, self.weights_hidden_output) + self.bias_output
 
         if self.output_activation == 'linear':
@@ -121,20 +119,21 @@ class NeuralNetwork:
 
         for epoch in range(epochs):
             # Forward
-            y_pred = self.forward(X_train)
+            y_train_pred = self.forward(X_train)
 
-            # Cálculo do erro
-            loss = loss_function(y_train, y_pred)
-            self.backward(X_train, y_train, y_pred, loss_derivative)
-            train_losses.append(loss)
+            # Cálculo do erro dos dados de treinamento
+            train_loss = loss_function(y_train, y_train_pred)
+            self.backward(X_train, y_train, y_train_pred, loss_derivative)
+            train_losses.append(train_loss)
 
+            # Cálculo do erro dos dados de teste sem atualização de parâmetros
             if X_test is not None and y_test is not None:
               y_test_pred = self.forward(X_test)
               test_loss = loss_function(y_test, y_test_pred)
               test_losses.append(test_loss)
 
-            if epoch % 100 == 0:
-                print(f"Epoch {epoch}, Train Loss: {loss:.4f}, Test Loss: {test_loss if X_test is not None else 'N/A'}")
+            if epoch % 10 == 0:
+                print(f"Epoch {epoch} -> Train Loss: {train_loss:.4f}, Test Loss: {test_loss if X_test is not None else 'N/A'}")
 
         return train_losses, test_losses
 

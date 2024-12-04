@@ -39,3 +39,11 @@ Para tratamento dos dados:
 Vale ressaltar que, no caso de utilização via Google Colab, é necessário apenas a instalação da ucimlrepo, da qual já está inclusa projeto. Segue link:
 
 https://colab.research.google.com/drive/1u05ZDfpGY7dK8e2widIgpvcunn3-BjBs?usp=sharing
+
+
+A execução deve ser realizada da seguinte forma:
+```
+python.exe .\binary.py
+python.exe .\regression.py
+python.exe .\multiclass.py
+```

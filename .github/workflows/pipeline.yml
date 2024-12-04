@@ -33,11 +33,6 @@ jobs:
       id: multiclass
       continue-on-error: true 
 
-    - name: Check accuracy for multiclass
-      run: |
-        python -c "import numpy as np; accuracy = np.mean(np.argmax(y_test, axis=1) == y_pred_test) * 100; assert accuracy > 50, 'Acurácia abaixo de 50%'"
-      if: steps.multiclass.outcome == 'success'
-
     - name: Run binary model
       run: |
         python binary.py

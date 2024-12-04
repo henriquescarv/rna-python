@@ -39,18 +39,9 @@ jobs:
       id: binary
       continue-on-error: true
 
-    - name: Check accuracy for binary model
-      run: |
-        python -c "import numpy as np; accuracy = np.mean(y_pred_test == y_test_normalized) * 100; assert accuracy > 50, 'Acurácia abaixo de 50%'"
-      if: steps.binary.outcome == 'success'
-
     - name: Run regression model
       run: |
         python regression.py
       id: regression
       continue-on-error: true
-
-    - name: Check R2 for regression model
-      run: |
-        python -c "import numpy as np; r2 = np.corrcoef(y_test_normalized, y_test_pred)[0, 1]; assert r2 > 0.5, 'R2 abaixo de 0.5'"
-      if: steps.regression.outcome == 'success'
+      

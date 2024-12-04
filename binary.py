@@ -60,6 +60,9 @@ y_pred_test = nn.predict(X_test_normalized, 'binary')
 accuracy_test = np.mean(y_pred_test == y_test_normalized) * 100
 print(f"Acurácia no conjunto de dados de teste: {accuracy_test:.2f}%")
 
+# Verificar se a acurácia de teste é maior que 50% para passar na pipeline
+assert accuracy_test > 50, f'Acurácia abaixo de 50% no teste: {accuracy_test}'
+
 # Gráfico das perdas
 plt.plot(train_losses, label="Treinamento")
 plt.plot(test_losses, label="Teste")

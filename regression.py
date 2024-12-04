@@ -49,13 +49,16 @@ train_losses, test_losses = nn.train(X_train_normalized, y_train_normalized, epo
 
 # Avaliação dos dados de treinamento
 y_train_pred = nn.forward(X_train_normalized)
-r2 = r2_score(y_train_normalized, y_train_pred)
-print(f"Coeficiente de Determinação (R2) - treinamento: {r2}")
+r2_train = r2_score(y_train_normalized, y_train_pred)
+print(f"Coeficiente de Determinação (R2) - treinamento: {r2_train}")
 
 # Avaliação dos dados de teste
 y_test_pred = nn.forward(X_test_normalized)
-r2 = r2_score(y_test_normalized, y_test_pred)
-print(f"Coeficiente de Determinação (R2) - teste: {r2}")
+r2_test = r2_score(y_test_normalized, y_test_pred)
+print(f"Coeficiente de Determinação (R2) - teste: {r2_test}")
+
+# Verificar se R2 de teste é maior que 0.5 para passar na pipeline
+assert r2_test > 0.5, f'R2 abaixo de 0.5'
 
 # Gráfico das perdas
 plt.plot(train_losses, label="Treinamento")

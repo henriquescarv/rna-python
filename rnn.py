@@ -84,7 +84,7 @@ class NeuralNetwork:
 
         return self.final_output
 
-    def backpropagation(self, X, y, y_pred, loss_derivative):
+    def backward(self, X, y, y_pred, loss_derivative):
         # Erro na saída
         if self.output_activation == 'linear':
           output_error = loss_derivative(y, y_pred) * linear_derivative(self.final_input)

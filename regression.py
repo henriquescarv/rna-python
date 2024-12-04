@@ -36,10 +36,10 @@ y_test_normalized = y_test
 
 # Definindo hiperparâmetros
 input_size = X_train_normalized.shape[1]
-hidden_size = 10 # Camada oculta
+hidden_size = 20 # Camada oculta
 output_size = 1 # Número de classes
 learning_rate = 0.1 # Taxa de aprendizado
-epochs = 600 # Épocas
+epochs = 60 # Épocas
 
 # Inicializando a rede neural
 nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate)

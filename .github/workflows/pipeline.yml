@@ -29,19 +29,19 @@ jobs:
 
     - name: Run multiclass model
       run: |
-        python multiclass.py
+        python src/multiclass.py
       id: multiclass
       continue-on-error: true 
 
     - name: Run binary model
       run: |
-        python binary.py
+        python src/binary.py
       id: binary
       continue-on-error: true
 
     - name: Run regression model
       run: |
-        python regression.py
+        python src/regression.py
       id: regression
       continue-on-error: true
       

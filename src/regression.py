@@ -16,8 +16,11 @@ data_csv = pd.read_csv(os.path.join(data_path, dataset))
 def normalize(data):
     return (data - np.mean(data, axis=0)) / np.std(data, axis=0)
 
-# Selecionar variáveis independentes (X) e dependentes (y)
-X = data_csv[['Hours Studied', 'Previous Scores', 'Sleep Hours', 'Sample Question Papers Practiced']].values
+# Preparar os dados
+X = data_csv[['Hours Studied', 'Previous Scores', 'Extracurricular Activities', 'Sleep Hours', 'Sample Question Papers Practiced']]
+X = X.copy()
+X['Extracurricular Activities'] = X['Extracurricular Activities'].map({'Yes': 1, 'No': 0})
+X = X.values
 y = data_csv['Performance Index'].values
 y = normalize(y.reshape(-1, 1))
 
@@ -34,10 +37,10 @@ y_test_normalized = y_test
 
 # Definindo hiperparâmetros
 input_size = X_train_normalized.shape[1]
-hidden_size = 10 # Camada oculta
+hidden_size = 20 # Camada oculta
 output_size = 1 # Número de classes
 learning_rate = 0.1 # Taxa de aprendizado
-epochs = 600 # Épocas
+epochs = 50 # Épocas
 
 # Inicializando a rede neural
 nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate)

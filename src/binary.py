@@ -5,7 +5,7 @@ import pandas
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 
-from rnn import binary_crossentropy_loss, binary_crossentropy_loss_derivative, NeuralNetwork
+from rnn import categorical_crossentropy_loss, categorical_crossentropy_loss_derivative, NeuralNetwork
 
 # Carregar o dataset do câncer
 cancer_dataset_path = kagglehub.dataset_download("yasserh/breast-cancer-dataset")
@@ -37,17 +37,17 @@ y_test_normalized = y_test
 
 # Definindo hiperparâmetros
 input_size = X_train_normalized.shape[1]
-hidden_size = 10 # Camada oculta
+hidden_size = 11 # Camada oculta
 output_size = y_train_normalized.shape[1] # Número de classes
 learning_rate = 0.01 # Taxa de aprendizado
-epochs = 100 # Épocas
+epochs = 55 # Épocas
 
 # Inicializando a rede neural
 nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate, output_activation='sigmoid')
 
 # Treinando a rede
 train_losses, test_losses = nn.train(X_train_normalized, y_train_normalized, epochs, 
-                                     binary_crossentropy_loss, binary_crossentropy_loss_derivative,
+                                     categorical_crossentropy_loss, categorical_crossentropy_loss_derivative,
                                      X_test=X_test_normalized, y_test=y_test_normalized)
 
 # Avaliação dos dados de treinamento

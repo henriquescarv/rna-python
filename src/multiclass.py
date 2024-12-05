@@ -25,10 +25,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y_onehot, test_size=0.2, 
 
 # Definindo hiperparâmetros
 input_size = X_train.shape[1]
-hidden_size = 250 # Camada oculta
+print(input_size)
+hidden_size = 10 # Camada oculta
 output_size = y_train.shape[1]  # Número de classes
-learning_rate = 0.01 # Taxa de aprendizado
-epochs = 70 # Épocas
+learning_rate = 0.009 # Taxa de aprendizado
+epochs = 55 # Épocas
 
 # Inicializando a rede neural
 nn = NeuralNetwork(input_size, hidden_size, output_size, learning_rate, output_activation='softmax')

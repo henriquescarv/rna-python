@@ -43,7 +43,7 @@ https://colab.research.google.com/drive/1u05ZDfpGY7dK8e2widIgpvcunn3-BjBs?usp=sh
 
 A execução deve ser realizada da seguinte forma:
 ```
-python.exe .\binary.py
-python.exe .\regression.py
-python.exe .\multiclass.py
+python.exe src/binary.py
+python.exe src/regression.py
+python.exe src/multiclass.py
 ```

@@ -32,14 +32,6 @@ def mse_loss(y_true, y_pred): # Erro quadrático médio
 def mse_loss_derivative(y_true, y_pred):
     return -2 * (y_true - y_pred) / y_true.size
 
-def binary_crossentropy_loss(y_true, y_pred): # Entropria cruzada binária
-    epsilon = 1e-15  # Evitar log(0)
-    y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
-    return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
-
-def binary_crossentropy_loss_derivative(y_true, y_pred):
-    return y_pred - y_true
-
 def categorical_crossentropy_loss(y_true, y_pred): # Entropria cruzada categórica
     epsilon = 1e-15
     y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
@@ -48,12 +40,12 @@ def categorical_crossentropy_loss(y_true, y_pred): # Entropria cruzada categóri
 def categorical_crossentropy_loss_derivative(y_true, y_pred):
     return y_pred - y_true
 
+
 # Função para calcular o coeficiente de determinação (R2) para o problema de regressão
 def r2_score(y_true, y_pred):
     ss_total = np.sum((y_true - np.mean(y_true)) ** 2)
     ss_residual = np.sum((y_true - y_pred) ** 2)
     return 1 - (ss_residual / ss_total)
-
 
 
 class NeuralNetwork:
@@ -145,4 +137,3 @@ class NeuralNetwork:
       if type == 'multiclass':
         y_pred = self.forward(X)
         return np.argmax(y_pred, axis=1)  # Classificação multiclasse
-      

@@ -18,6 +18,7 @@ def normalize(data):
 
 # Preparar os dados
 X = data_csv[['Hours Studied', 'Previous Scores', 'Extracurricular Activities', 'Sleep Hours', 'Sample Question Papers Practiced']]
+X = X.copy()
 X['Extracurricular Activities'] = X['Extracurricular Activities'].map({'Yes': 1, 'No': 0})
 X = X.values
 y = data_csv['Performance Index'].values

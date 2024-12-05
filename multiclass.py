@@ -26,9 +26,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y_onehot, test_size=0.2, 
 # Definindo hiperparâmetros
 input_size = X_train.shape[1]
 print(input_size)
-hidden_size = 11 # Camada oculta
+hidden_size = 10 # Camada oculta
 output_size = y_train.shape[1]  # Número de classes
-learning_rate = 0.01 # Taxa de aprendizado
+learning_rate = 0.009 # Taxa de aprendizado
 epochs = 55 # Épocas
 
 # Inicializando a rede neural

@@ -32,14 +32,6 @@ def mse_loss(y_true, y_pred): # Erro quadrático médio
 def mse_loss_derivative(y_true, y_pred):
     return -2 * (y_true - y_pred) / y_true.size
 
-def binary_crossentropy_loss(y_true, y_pred): # Entropria cruzada binária
-    epsilon = 1e-15  # Evitar log(0)
-    y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
-    return -np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
-
-def binary_crossentropy_loss_derivative(y_true, y_pred):
-    return y_pred - y_true
-
 def categorical_crossentropy_loss(y_true, y_pred): # Entropria cruzada categórica
     epsilon = 1e-15
     y_pred = np.clip(y_pred, epsilon, 1 - epsilon)
